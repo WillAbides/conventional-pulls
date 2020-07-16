@@ -10,6 +10,10 @@ dependencies:
     template: origin#golangci-lint
     vars:
       version: 1.28.2
+  mockgen:
+    template: origin#mockgen
+    vars:
+      version: 1.4.3
   shellcheck:
     template: origin#shellcheck
     vars:
@@ -69,6 +73,28 @@ templates:
     - linux/mips64le
     - linux/s390x
     - linux/ppc64le
+  origin#mockgen:
+    url: https://github.com/golang/mock/releases/download/v{{.version}}/mock_{{.version}}_{{.os}}_{{.arch}}.tar.gz
+    archive_path: mock_{{.version}}_{{.os}}_{{.arch}}/mockgen{{.archivepathsuffix}}
+    bin: mockgen
+    vars:
+      archivepathsuffix: ""
+    required_vars:
+    - version
+    overrides:
+    - matcher:
+        os:
+        - windows
+      dependency:
+        vars:
+          archivepathsuffix: .exe
+    systems:
+    - darwin/386
+    - darwin/amd64
+    - linux/386
+    - linux/amd64
+    - windows/386
+    - windows/amd64
   origin#shellcheck:
     url: https://github.com/koalaman/shellcheck/releases/download/v{{.version}}/shellcheck-v{{.version}}.{{.os}}.{{.arch}}.tar.xz
     archive_path: shellcheck-v{{.version}}/shellcheck
@@ -92,6 +118,8 @@ templates:
 template_sources:
   origin: https://raw.githubusercontent.com/WillAbides/bindown-templates/master/bindown.yml
 url_checksums:
+  https://github.com/golang/mock/releases/download/v1.4.3/mock_1.4.3_darwin_amd64.tar.gz: e9358415e26f710a6d559342f8c4e1cf5befc41b8146106a79947f4d152c9324
+  https://github.com/golang/mock/releases/download/v1.4.3/mock_1.4.3_linux_amd64.tar.gz: cf2b1497584844d8f5479f915c3174418ee8c0f1ca693a90ac691713463bd320
   https://github.com/golangci/golangci-lint/releases/download/v1.28.2/golangci-lint-1.28.2-darwin-amd64.tar.gz: 6e6952a4d72906f6265c379743f274b7609a289cc9cbb19bf6ff94e6f8f00daf
   https://github.com/golangci/golangci-lint/releases/download/v1.28.2/golangci-lint-1.28.2-linux-amd64.tar.gz: c893b07dd7d2c8e13b6380dd52781bb6732f7f541d90da2dc941be5f7e8be6fb
   https://github.com/koalaman/shellcheck/releases/download/v0.7.1/shellcheck-v0.7.1.darwin.x86_64.tar.xz: b080c3b659f7286e27004aa33759664d91e15ef2498ac709a452445d47e3ac23
