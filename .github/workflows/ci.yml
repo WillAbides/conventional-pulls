@@ -12,3 +12,8 @@ jobs:
       - run: script/generate --check
       - run: script/test
       - run: script/lint
+      - name: check rate limit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X 'GET' -H 'Accept: application/vnd.github.v3+json' -H 'User-Agent: octo-cli/0.19.0' -H "Authorization: token $GITHUB_TOKEN" 'https://api.github.com/rate_limit'
